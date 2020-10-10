@@ -17,6 +17,37 @@ public class Film {
 	private String specialFeatures;
 
 	private List<Actor> actors;
+	
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_MAGENTA = "\u001B[35m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
+
+	public Film() {
+		super();
+	}
+
+	public Film(int id, String title, String description, int releaseYear, String language, int rentalDuration,
+			double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
+			List<Actor> actors) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.releaseYear = releaseYear;
+		this.language = language;
+		this.rentalDuration = rentalDuration;
+		this.rentalRate = rentalRate;
+		this.length = length;
+		this.replacementCost = replacementCost;
+		this.rating = rating;
+		this.specialFeatures = specialFeatures;
+		this.actors = actors;
+	}
 
 	public int getId() {
 		return id;
@@ -190,35 +221,37 @@ public class Film {
 		return true;
 	}
 
-	@Override
 	public String toString() {
+		return ("\n\nTitle: " + ANSI_GREEN + title + ANSI_RESET
+				+ "\nYear Released: " + ANSI_BLUE + releaseYear + ANSI_RESET
+				+ "\nRating: " + ANSI_RED + rating + ANSI_RESET
+				+ "\nLanguage: " + ANSI_CYAN + language + ANSI_RESET
+				+ "\nDescription: " + ANSI_MAGENTA + description + ANSI_RESET
+				+ "\nCast: " + ANSI_YELLOW + showActors() + ANSI_RESET);
+	}
+	
+	public String showActors(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Film [id=");
-		builder.append(id);
-		builder.append(", title=");
-		builder.append(title);
-		builder.append(", description=");
-		builder.append(description);
-		builder.append(", releaseYear=");
-		builder.append(releaseYear);
-		builder.append(", language=");
-		builder.append(language);
-		builder.append(", rentalDuration=");
-		builder.append(rentalDuration);
-		builder.append(", rentalRate=");
-		builder.append(rentalRate);
-		builder.append(", length=");
-		builder.append(length);
-		builder.append(", replacementCost=");
-		builder.append(replacementCost);
-		builder.append(", rating=");
-		builder.append(rating);
-		builder.append(", specialFeatures=");
-		builder.append(specialFeatures);
-		builder.append(", actors=");
-		builder.append(actors);
-		builder.append("]");
+		for (int i = 0; i < actors.size(); i++) {
+			if (i != actors.size() - 1) {
+				builder.append(actors.get(i).toString());
+				builder.append(", ");
+			} else if (i == actors.size() - 1) {
+				builder.append(actors.get(i).toString());
+			}
+		}
 		return builder.toString();
 	}
-
+	
+	public void showFilmDetails() {
+		String s = "";
+		s+=this.toString();
+		s+= "\nRental Duration: " + rentalDuration 
+			+ "\nRental Rate: " + ANSI_MAGENTA + rentalRate + ANSI_RESET 
+			+ "\nLength: " + ANSI_CYAN + length + ANSI_RESET 
+			+ "\nReplacement Cost: " + ANSI_RED + replacementCost + ANSI_RESET 
+			+ "\nSpecial Features: " + ANSI_BLUE + specialFeatures + ANSI_RESET ;
+		 System.out.println(s);
+	}
+	
 }
