@@ -8,14 +8,16 @@ public class Film {
 	private String title;
 	private String description;
 	private int releaseYear;
-	private String language;
+//	private String language;
 	private int rentalDuration;
 	private double rentalRate;
 	private int length;
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
-	private String category;
+	
+	private Language language;
+	private List<Category> category;
 
 	private List<Actor> actors;
 	
@@ -32,9 +34,9 @@ public class Film {
 		super();
 	}
 
-	public Film(int id, String title, String description, int releaseYear, String language, int rentalDuration,
+	public Film(int id, String title, String description, int releaseYear, Language language, int rentalDuration,
 			double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
-			List<Actor> actors, String category) {
+			List<Actor> actors, List<Category> category) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -83,11 +85,11 @@ public class Film {
 		this.releaseYear = releaseYear;
 	}
 
-	public String getLanguage() {
+	public Language getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(String language) {
+	public void setLanguage(Language language) {
 		this.language = language;
 	}
 
@@ -147,11 +149,11 @@ public class Film {
 		this.actors = actors;
 	}
 	
-	public String getCategory() {
+	public List<Category> getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(List<Category> category) {
 		this.category = category;
 	}
 
@@ -235,9 +237,13 @@ public class Film {
 		return ("\n\nTitle: " + ANSI_GREEN + title + ANSI_RESET
 				+ "\nYear Released: " + ANSI_BLUE + releaseYear + ANSI_RESET
 				+ "\nRating: " + ANSI_RED + rating + ANSI_RESET
-				+ "\nLanguage: " + ANSI_CYAN + language + ANSI_RESET
+				+ "\nLanguage: " + ANSI_CYAN + showLanguage() + ANSI_RESET
 				+ "\nDescription: " + ANSI_MAGENTA + description + ANSI_RESET
 				+ "\nCast: " + ANSI_YELLOW + showActors() + ANSI_RESET);
+	}
+	
+	public String showLanguage() {
+		return language.getName();
 	}
 	
 	public String showActors(){
@@ -261,8 +267,21 @@ public class Film {
 			+ "\nLength: " + ANSI_CYAN + length + ANSI_RESET 
 			+ "\nReplacement Cost: " + ANSI_RED + replacementCost + ANSI_RESET 
 			+ "\nSpecial Features: " + ANSI_BLUE + specialFeatures + ANSI_RESET
-			+ "\nCategory: " + category;
+			+ "\nCategory: " + showCategory();
 		 System.out.println(s);
+	}
+	
+	public String showCategory() {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < category.size(); i++) {
+			if (i != category.size() - 1) {
+				builder.append(category.get(i).getName());
+				builder.append(", ");
+			} else if (i == category.size() - 1) {
+				builder.append(category.get(i).toString());
+			}
+		}
+		return builder.toString();
 	}
 	
 }

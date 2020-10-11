@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.skilldistillery.filmquery.entities.Actor;
+import com.skilldistillery.filmquery.entities.Category;
 import com.skilldistillery.filmquery.entities.Film;
+import com.skilldistillery.filmquery.entities.Language;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
@@ -32,7 +34,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Film film = null;
 		String user = "student";
 		String pass = "student";
-		String sqlText = "SELECT * FROM film JOIN language ON language.id = film.language_id JOIN film_category ON film_category.film_id = film.id JOIN category ON category.id = film_category.category_id WHERE film.id =?";
+		String sqlText = "SELECT * FROM film " + "JOIN language ON language.id = film.language_id "
+				+ "JOIN film_category ON film_category.film_id = film.id "
+				+ "JOIN category ON category.id = film_category.category_id WHERE film.id =?";
 		try (Connection conn = DriverManager.getConnection(URL, user, pass);
 				PreparedStatement pst = conn.prepareStatement(sqlText);) {
 
@@ -45,7 +49,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setTitle(rs.getString("title"));
 				film.setDescription(rs.getString("description"));
 				film.setReleaseYear(rs.getInt("release_year"));
-				film.setLanguage(rs.getString("name"));
+				film.setLanguage(findLanguageByFilmId(filmId));
 				film.setRentalDuration(rs.getInt("rental_duration"));
 				film.setRentalRate(rs.getDouble("rental_rate"));
 				film.setLength(rs.getInt("length"));
@@ -53,12 +57,83 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(rs.getString("rating"));
 				film.setSpecialFeatures(rs.getString("special_features"));
 				film.setActors(findActorsByFilmId(filmId));
-				film.setCategory(rs.getString("category.name"));
+				film.setCategory(findCategoryByFilmId(filmId));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return film;
+	}
+
+	public Language findLanguageByFilmId(int filmId) {
+		Language lang = null;
+		String user = "student";
+		String pass = "student";
+		String sqlText = "SELECT * FROM film JOIN language ON language.id = film.language_id WHERE film.id = ?";
+		try (Connection conn = DriverManager.getConnection(URL, user, pass);
+				PreparedStatement pst = conn.prepareStatement(sqlText);) {
+
+			pst.setInt(1, filmId);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				lang = new Language();
+				lang.setId(rs.getInt("id"));
+				lang.setName(rs.getString("name"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lang;
+	}
+
+	public Category findCategoryById(int categoryId) {
+		Category cat = null;
+		String user = "student";
+		String pass = "student";
+		String sqlText = "SELECT * FROM category WHERE id =?";
+		try (Connection conn = DriverManager.getConnection(URL, user, pass);
+				PreparedStatement pst = conn.prepareStatement(sqlText);) {
+
+			pst.setInt(1, categoryId);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				cat = new Category();
+				cat.setId(rs.getInt("id"));
+				cat.setName(rs.getString("name"));
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (cat != null) {
+			return cat;
+		} else {
+			return null;
+		}
+		
+	}
+	
+	public List<Category> findCategoryByFilmId(int filmId) {
+		List<Category> categoryList = new ArrayList<>();
+		String user = "student";
+		String pass = "student";
+		String sqlText = "SELECT * FROM film JOIN film_category ON film_category.film_id = film.id JOIN category ON category.id = film_category.category_id WHERE film.id = ?";
+		try (Connection conn = DriverManager.getConnection(URL, user, pass);
+				PreparedStatement pst = conn.prepareStatement(sqlText);) {
+
+			pst.setInt(1, filmId);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				categoryList.add(findCategoryById(rs.getInt("category.id")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return categoryList;
+	
 	}
 
 	public Actor findActorById(int actorId) {
@@ -108,10 +183,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 		return actorList;
 	}
-	
+
 	public List<Film> findFilmByKeyword(String key) {
 		List<Film> filmList = new ArrayList<>();
 		List<Actor> actors = new ArrayList<>();
+		Language language = null;
+		List<Category> category = new ArrayList<>();
 		String user = "student";
 		String pass = "student";
 		String sqlText = "SELECT * FROM film JOIN language ON language.id = film.language_id JOIN film_category ON film_category.film_id = film.id JOIN category ON category.id = film_category.category_id WHERE film.title like ? or film.description like ?";
@@ -127,7 +204,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				String title = rs.getString("title");
 				String desc = rs.getString("description");
 				int year = rs.getInt("release_year");
-				String name = rs.getString("name");
+				language = (findLanguageByFilmId(rs.getInt("id")));
 				int rentalDuration = rs.getInt("rental_duration");
 				double rentRate = rs.getDouble("rental_rate");
 				int length = rs.getInt("length");
@@ -135,14 +212,15 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				String rating = rs.getString("rating");
 				String specialFeatures = rs.getString("special_features");
 				actors = (findActorsByFilmId(rs.getInt("id")));
-				String category = rs.getString("category.name");
-				Film film = new Film(filmId, title, desc, year, name, rentalDuration, rentRate, length, replacementCost, rating, specialFeatures, actors, category);
+				category = (findCategoryByFilmId(rs.getInt("id")));
+				Film film = new Film(filmId, title, desc, year, language, rentalDuration, rentRate, length, replacementCost,
+						rating, specialFeatures, actors, category);
 				filmList.add(film);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return filmList;
 	}
 
