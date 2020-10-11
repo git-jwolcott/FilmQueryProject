@@ -126,6 +126,7 @@ public class FilmQueryApp {
 					break;
 				}
 				else if(lf !=null){
+
 					for (Film film : lf) {
 						film.showFilmDetails();
 					}

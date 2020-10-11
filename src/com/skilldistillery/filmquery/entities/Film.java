@@ -15,6 +15,7 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	private String category;
 
 	private List<Actor> actors;
 	
@@ -33,7 +34,7 @@ public class Film {
 
 	public Film(int id, String title, String description, int releaseYear, String language, int rentalDuration,
 			double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
-			List<Actor> actors) {
+			List<Actor> actors, String category) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -47,6 +48,7 @@ public class Film {
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
 		this.actors = actors;
+		this.category = category;
 	}
 
 	public int getId() {
@@ -143,6 +145,14 @@ public class Film {
 
 	public void setActors(List<Actor> actors) {
 		this.actors = actors;
+	}
+	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	@Override
@@ -250,7 +260,8 @@ public class Film {
 			+ "\nRental Rate: " + ANSI_MAGENTA + rentalRate + ANSI_RESET 
 			+ "\nLength: " + ANSI_CYAN + length + ANSI_RESET 
 			+ "\nReplacement Cost: " + ANSI_RED + replacementCost + ANSI_RESET 
-			+ "\nSpecial Features: " + ANSI_BLUE + specialFeatures + ANSI_RESET ;
+			+ "\nSpecial Features: " + ANSI_BLUE + specialFeatures + ANSI_RESET
+			+ "\nCategory: " + category;
 		 System.out.println(s);
 	}
 	

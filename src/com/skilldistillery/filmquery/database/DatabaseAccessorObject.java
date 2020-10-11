@@ -32,7 +32,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Film film = null;
 		String user = "student";
 		String pass = "student";
-		String sqlText = "SELECT * FROM film " + "JOIN language ON language.id = film.language_id WHERE film.id =?";
+		String sqlText = "SELECT * FROM film JOIN language ON language.id = film.language_id JOIN film_category ON film_category.film_id = film.id JOIN category ON category.id = film_category.category_id WHERE film.id =?";
 		try (Connection conn = DriverManager.getConnection(URL, user, pass);
 				PreparedStatement pst = conn.prepareStatement(sqlText);) {
 
@@ -53,6 +53,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(rs.getString("rating"));
 				film.setSpecialFeatures(rs.getString("special_features"));
 				film.setActors(findActorsByFilmId(filmId));
+				film.setCategory(rs.getString("category.name"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -113,7 +114,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		List<Actor> actors = new ArrayList<>();
 		String user = "student";
 		String pass = "student";
-		String sqlText = "SELECT * FROM film " + "JOIN language ON language.id = film.language_id WHERE film.title like ? or film.description like ?";
+		String sqlText = "SELECT * FROM film JOIN language ON language.id = film.language_id JOIN film_category ON film_category.film_id = film.id JOIN category ON category.id = film_category.category_id WHERE film.title like ? or film.description like ?";
 		try (Connection conn = DriverManager.getConnection(URL, user, pass);
 				PreparedStatement pst = conn.prepareStatement(sqlText);) {
 
@@ -134,7 +135,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				String rating = rs.getString("rating");
 				String specialFeatures = rs.getString("special_features");
 				actors = (findActorsByFilmId(rs.getInt("id")));
-				Film film = new Film(filmId, title, desc, year, name, rentalDuration, rentRate, length, replacementCost, rating, specialFeatures, actors);
+				String category = rs.getString("category.name");
+				Film film = new Film(filmId, title, desc, year, name, rentalDuration, rentRate, length, replacementCost, rating, specialFeatures, actors, category);
 				filmList.add(film);
 			}
 		} catch (SQLException e) {
