@@ -80,10 +80,9 @@ The Eclipse plugin - ANSI Escape in Console makes console output more interestin
 
 Upon running the program, the user is presented with a menu (main menu). The user will enter 1 to look up a film by its id, 2 to look up a film by keyword, or 3 to exit the application.
 
--------------------- MENU -----------------  
+---- MENU ----  
 ---
-       Enter a number from the list  
-
+      Enter a number from the list  
    1. Lookup a film by its id.  
    2. Lookup a film by a search keyword.  
    3. Exit the application.  
