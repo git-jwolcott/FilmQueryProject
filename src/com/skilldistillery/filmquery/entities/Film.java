@@ -19,15 +19,6 @@ public class Film {
 	private List<Category> category;
 	private List<Actor> actors;
 	private List<InventoryItem> inventoryItem;
-	
-	public static final String ANSI_RESET = "\u001B[0m";
-	public static final String ANSI_MAGENTA = "\u001B[35m";
-	public static final String ANSI_RED = "\u001B[31m";
-	public static final String ANSI_GREEN = "\u001B[32m";
-	public static final String ANSI_YELLOW = "\u001B[33m";
-	public static final String ANSI_BLUE = "\u001B[34m";
-	public static final String ANSI_CYAN = "\u001B[36m";
-	public static final String ANSI_WHITE = "\u001B[37m";
 
 	public Film() {
 		super();
@@ -256,12 +247,12 @@ public class Film {
 	}
 
 	public String toString() {
-		return ("\n\nTitle: " + ANSI_GREEN + title + ANSI_RESET
-				+ "\nYear Released: " + ANSI_BLUE + releaseYear + ANSI_RESET
-				+ "\nRating: " + ANSI_RED + rating + ANSI_RESET
-				+ "\nLanguage: " + ANSI_CYAN + showLanguage() + ANSI_RESET
-				+ "\nDescription: " + ANSI_MAGENTA + description + ANSI_RESET
-				+ "\nCast: " + ANSI_YELLOW + showActors() + ANSI_RESET);
+		return ("\n\nTitle: " + title 
+				+ "\nYear Released: " + releaseYear
+				+ "\nRating: " + rating
+				+ "\nLanguage: " + showLanguage()
+				+ "\nDescription: " + description 
+				+ "\nCast: "  + showActors());
 	}
 	
 	public String showLanguage() {
@@ -284,15 +275,15 @@ public class Film {
 	public void showFilmDetails() {
 		String s = "";
 		s+=this.toString();
-		s+= "\nRental Duration: " + rentalDuration 
-			+ "\nRental Rate: " + ANSI_MAGENTA + rentalRate + ANSI_RESET 
-			+ "\nLength: " + ANSI_CYAN + length + " minutes" + ANSI_RESET 
-			+ "\nReplacement Cost: " + ANSI_RED + replacementCost + ANSI_RESET 
-			+ "\nSpecial Features: " + ANSI_BLUE + specialFeatures + ANSI_RESET
-			+ "\nCategory: " + ANSI_YELLOW + showCategory() + ANSI_RESET
-			+ "\n" + showInventory();
-			System.out.println(s);
-	}
+			s+= "\nRental Duration: " + rentalDuration 
+					+ "\nRental Rate: " + rentalRate 
+					+ "\nLength: "  + length + " minutes" 
+					+ "\nReplacement Cost: " + replacementCost 
+					+ "\nSpecial Features: "  + specialFeatures 
+					+ "\nCategory: "  + showCategory() 
+					+ "\n" + showInventory();
+					System.out.println(s);
+		}
 	
 	public String showCategory() {
 		StringBuilder builder = new StringBuilder();
@@ -310,41 +301,19 @@ public class Film {
 	public String showInventory() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(inventoryItem.size());
-		builder.append(" Copies in Inventory: ");
+		builder.append(" Copies in Inventory: \n");
 		for (int i = 0; i < inventoryItem.size(); i++) {
 			if (i != inventoryItem.size() - 1) {
 				builder.append("Copy ");
 				builder.append(i + 1);
 				builder.append(" Condition: ");
-				 if(inventoryItem.get(i).getMediaCondition().equals("Used")) {
-					builder.append(ANSI_BLUE);
-				}
-				else if(inventoryItem.get(i).getMediaCondition().equals("New")) {
-					builder.append(ANSI_GREEN);
-				}
-				else if(inventoryItem.get(i).getMediaCondition().equals("Lost") || inventoryItem.get(i).getMediaCondition().equals("Damaged")) {
-					builder.append(ANSI_RED);
-				}
-				else {builder.append(ANSI_YELLOW);}
 				builder.append(inventoryItem.get(i).getMediaCondition());
-				builder.append(ANSI_RESET);
-				builder.append(", ");
+				builder.append("\n");
 			} else if (i == inventoryItem.size() - 1) {
 				builder.append("Copy ");
 				builder.append(i + 1);
 				builder.append(" Condition: ");
-				if(inventoryItem.get(i).getMediaCondition().equals("Used")) {
-					builder.append(ANSI_BLUE);
-				}
-				else if(inventoryItem.get(i).getMediaCondition().equals("New")) {
-					builder.append(ANSI_GREEN);
-				}
-				else if(inventoryItem.get(i).getMediaCondition().equals("Lost") || inventoryItem.get(i).getMediaCondition().equals("Damaged")) {
-					builder.append(ANSI_RED);
-				}
-				else {builder.append(ANSI_YELLOW);}
 				builder.append(inventoryItem.get(i).getMediaCondition());
-				builder.append(ANSI_RESET);
 			}
 		}
 		return builder.toString();
