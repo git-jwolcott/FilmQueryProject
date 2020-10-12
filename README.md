@@ -90,12 +90,12 @@ Upon running the program, the user is presented with a menu (main menu). The use
 
 If 1 is entered from the main menu, the user is asked for a film id. The system then presents the film's title, year of release, rating, language, description, and a list of cast members for the associated film id.
 
-Title: ALASKA PHANTOM
-Year Released: 2003
-Rating: PG
-Language: English
-Description: A Fanciful Saga of a Hunter And a Pastry Chef who must Vanquish a Boy in Australia
-Cast: Val Bolger, Burt Posey, Sidney Crowe, Sylvester Dern, Albert Johansson, Gene McKellen, Jeff Silverstone
+Title: ALASKA PHANTOM  
+Year Released: 2003  
+Rating: PG  
+Language: English  
+Description: A Fanciful Saga of a Hunter And a Pastry Chef who must Vanquish a Boy in Australia  
+Cast: Val Bolger, Burt Posey, Sidney Crowe, Sylvester Dern, Albert Johansson, Gene McKellen, Jeff Silverstone  
 
 If the film id is not found, the user is presented with a message "Film id not found. Please try again."
 
@@ -113,18 +113,18 @@ If 2 is entered in the submenu, along with the previous information about the fi
 
 If 2 is entered from the main menu, the user is asked by a keyword. The system then searches film titles and film descriptions for the keyword. The system then returns the film's title, year of release, rating, language, description, and a list of cast members for each film with a title or description containing the keyword.
 
-Title: ALASKA PHANTOM
-Year Released: 2003
-Rating: PG
-Language: English
-Description: A Fanciful Saga of a Hunter And a Pastry Chef who must Vanquish a Boy in Australia
-Cast: Val Bolger, Burt Posey, Sidney Crowe, Sylvester Dern, Albert Johansson, Gene McKellen, Jeff Silverstone
-Rental Duration: 6
-Rental Rate: 0.99
-Length: 136 minutes
-Replacement Cost: 22.99
-Special Features: Commentaries,Deleted Scenes
-Category: Music
+Title: ALASKA PHANTOM  
+Year Released: 2003  
+Rating: PG  
+Language: English  
+Description: A Fanciful Saga of a Hunter And a Pastry Chef who must Vanquish a Boy in Australia  
+Cast: Val Bolger, Burt Posey, Sidney Crowe, Sylvester Dern, Albert Johansson, Gene McKellen, Jeff Silverstone  
+Rental Duration: 6  
+Rental Rate: 0.99  
+Length: 136 minutes  
+Replacement Cost: 22.99  
+Special Features: Commentaries,Deleted Scenes  
+Category: Music  
 20 Copies in Inventory: Copy 1 Condition: Unknown, Copy 2 Condition: Used, Copy 3 Condition: Used, Copy 4 Condition: Used, Copy 5 Condition: Used, Copy 6 Condition: Used, Copy 7 Condition: Used, Copy 8 Condition: New, Copy 9 Condition: Used, Copy 10 Condition: Used, Copy 11 Condition: Used, Copy 12 Condition: Used, Copy 13 Condition: Used, Copy 14 Condition: Used, Copy 15 Condition: Used, Copy 16 Condition: Used, Copy 17 Condition: Damaged, Copy 18 Condition: Used, Copy 19 Condition: Used, Copy 20 Condition: Used
 
 The user is then presented with the submenu and can opt to view expanded details for each film or to return back to the main menu.
