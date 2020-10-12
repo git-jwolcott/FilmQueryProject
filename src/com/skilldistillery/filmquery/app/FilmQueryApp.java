@@ -38,15 +38,15 @@ public class FilmQueryApp {
 
 	private void showMenu(Scanner input) {
 		System.out.println();
-		System.out.println("==================== MENU =================");
-		System.out.println("|                                         |");
-		System.out.println("|      Enter a number from the list       |");
-		System.out.println("|                                         |");
-		System.out.println("|  1. Lookup a film by its id.            |");
-		System.out.println("|  2. Lookup a film by a search keyword.  |");
-		System.out.println("|  3. Exit the application.               |");
-		System.out.println("|                                         |");
-		System.out.println("===========================================");
+		System.out.println("================== MENU ==================");
+		System.out.println("|                                        |");
+		System.out.println("|      Enter a number from the list      |");
+		System.out.println("|                                        |");
+		System.out.println("|  1. Lookup a film by its id.           |");
+		System.out.println("|  2. Lookup a film by a search keyword. |");
+		System.out.println("|  3. Exit the application.              |");
+		System.out.println("|                                        |");
+		System.out.println("==========================================");
 		System.out.println();
 		menuAction(input);
 	}
@@ -102,7 +102,6 @@ public class FilmQueryApp {
 		System.out.println("|                                |");
 		System.out.println("|  1. Return to main menu.       |");
 		System.out.println("|  2. View all film details.     |");
-		System.out.println("|                                |");
 		System.out.println("|                                |");
 		System.out.println("==================================");
 		System.out.println();
