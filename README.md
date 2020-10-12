@@ -103,13 +103,13 @@ If the film id is not found, the user is presented with a message "Film id not f
 
 The user is then presented with a submenu. The user may enter 1 to return to the main menu or enter 2 to view all the film details.
 
--------------- MENU --------------<br>
-<br>
-   Enter a number from the list   <br>
-                                  <br>
-   1. Return to the main menu.    <br>
-   2. View all film details.      <br>
-                                <br>
+MENU  |
+|  
+   Enter a number from the list  |
+|
+   1. Return to the main menu.  |
+   2. View all film details.  |
+|  
 ----------------------------------<br>
 
 If 1 is entered in the submenu, the user is return to the main menu and may select to view a film by id, keyword, or exit the application.
