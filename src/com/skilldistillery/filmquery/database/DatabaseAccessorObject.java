@@ -11,6 +11,7 @@ import java.util.List;
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Category;
 import com.skilldistillery.filmquery.entities.Film;
+import com.skilldistillery.filmquery.entities.InventoryItem;
 import com.skilldistillery.filmquery.entities.Language;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
@@ -58,6 +59,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setSpecialFeatures(rs.getString("special_features"));
 				film.setActors(findActorsByFilmId(filmId));
 				film.setCategory(findCategoryByFilmId(filmId));
+				film.setInventoryItem(findInventoryItemByFlimId(filmId));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -112,9 +114,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		} else {
 			return null;
 		}
-		
+
 	}
-	
+
 	public List<Category> findCategoryByFilmId(int filmId) {
 		List<Category> categoryList = new ArrayList<>();
 		String user = "student";
@@ -133,7 +135,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			e.printStackTrace();
 		}
 		return categoryList;
-	
+
 	}
 
 	public Actor findActorById(int actorId) {
@@ -176,7 +178,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				actorList.add(findActorById(rs.getInt("film_actor.actor_id")));
+				actorList.add(findActorById(rs.getInt("actor.id")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -189,6 +191,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		List<Actor> actors = new ArrayList<>();
 		Language language = null;
 		List<Category> category = new ArrayList<>();
+		List<InventoryItem> item = new ArrayList<>();
 		String user = "student";
 		String pass = "student";
 		String sqlText = "SELECT * FROM film JOIN language ON language.id = film.language_id JOIN film_category ON film_category.film_id = film.id JOIN category ON category.id = film_category.category_id WHERE film.title like ? or film.description like ?";
@@ -202,19 +205,41 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			while (rs.next()) {
 				int filmId = rs.getInt("id");
 				String title = rs.getString("title");
-				String desc = rs.getString("description");
-				int year = rs.getInt("release_year");
+				String desc;
+				if (rs.getString("description") == null) {
+					desc = "Unknown";
+				} else {
+					desc = rs.getString("description");
+				}
+				int year;
+				if (rs.getInt("release_year") == 0) {
+					year = 9999;
+				} else {
+					year = rs.getInt("release_year");
+				}
 				language = (findLanguageByFilmId(rs.getInt("id")));
 				int rentalDuration = rs.getInt("rental_duration");
 				double rentRate = rs.getDouble("rental_rate");
-				int length = rs.getInt("length");
+				int length;
+				if (rs.getInt("length") == 0) {
+					length = 9999;
+				} else {
+					length = rs.getInt("length");
+				}
 				double replacementCost = rs.getDouble("replacement_cost");
 				String rating = rs.getString("rating");
-				String specialFeatures = rs.getString("special_features");
+				String specialFeatures;
+				if(rs.getString("special_features") == null){
+					specialFeatures = "Unknown";
+				}
+				else {
+					specialFeatures = rs.getNString("special_features");
+				}
 				actors = (findActorsByFilmId(rs.getInt("id")));
 				category = (findCategoryByFilmId(rs.getInt("id")));
-				Film film = new Film(filmId, title, desc, year, language, rentalDuration, rentRate, length, replacementCost,
-						rating, specialFeatures, actors, category);
+				item = (findInventoryItemByFlimId(rs.getInt("id")));
+				Film film = new Film(filmId, title, desc, year, language, rentalDuration, rentRate, length,
+						replacementCost, rating, specialFeatures, actors, category, item);
 				filmList.add(film);
 			}
 		} catch (SQLException e) {
@@ -222,6 +247,60 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 
 		return filmList;
+	}
+
+	public InventoryItem findInventoryItemById(int inventoryItemId) {
+		InventoryItem item = null;
+		String user = "student";
+		String pass = "student";
+		String sqlText = "SELECT * FROM inventory_item WHERE inventory_item.id = ?";
+		try (Connection conn = DriverManager.getConnection(URL, user, pass);
+				PreparedStatement pst = conn.prepareStatement(sqlText);) {
+
+			pst.setInt(1, inventoryItemId);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				item = new InventoryItem();
+				item.setId(rs.getInt("id"));
+				if (rs.getString("media_condition") == null) {
+					item.setMediaCondition("Unknown");
+				} else {
+					item.setMediaCondition(rs.getString("media_condition"));
+				}
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (item != null) {
+			return item;
+		} else {
+			return null;
+		}
+
+	}
+
+	@Override
+	public List<InventoryItem> findInventoryItemByFlimId(int filmId) {
+		List<InventoryItem> inventoryList = new ArrayList<>();
+		String user = "student";
+		String pass = "student";
+		String sqlText = "SELECT * FROM inventory_item LEFT JOIN film ON film.id = inventory_item.film_id WHERE film.id =?";
+		try (Connection conn = DriverManager.getConnection(URL, user, pass);
+				PreparedStatement pst = conn.prepareStatement(sqlText);) {
+
+			pst.setInt(1, filmId);
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				inventoryList.add(findInventoryItemById(rs.getInt("inventory_item.id")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return inventoryList;
+
 	}
 
 }

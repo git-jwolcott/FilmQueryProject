@@ -8,7 +8,7 @@ public class Film {
 	private String title;
 	private String description;
 	private int releaseYear;
-//	private String language;
+	private Language language;
 	private int rentalDuration;
 	private double rentalRate;
 	private int length;
@@ -16,10 +16,9 @@ public class Film {
 	private String rating;
 	private String specialFeatures;
 	
-	private Language language;
 	private List<Category> category;
-
 	private List<Actor> actors;
+	private List<InventoryItem> inventoryItem;
 	
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_MAGENTA = "\u001B[35m";
@@ -36,7 +35,7 @@ public class Film {
 
 	public Film(int id, String title, String description, int releaseYear, Language language, int rentalDuration,
 			double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
-			List<Actor> actors, List<Category> category) {
+			List<Actor> actors, List<Category> category, List<InventoryItem> inventoryItem) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -51,6 +50,7 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 		this.actors = actors;
 		this.category = category;
+		this.inventoryItem = inventoryItem;
 	}
 
 	public int getId() {
@@ -156,14 +156,26 @@ public class Film {
 	public void setCategory(List<Category> category) {
 		this.category = category;
 	}
+	
+	public List<InventoryItem> getInventoryItem() {
+		return inventoryItem;
+	}
+	
+	public void setInventoryItem(List<InventoryItem> inventoryItem) {
+		this.inventoryItem = inventoryItem;
+	}
+
+	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((actors == null) ? 0 : actors.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((inventoryItem == null) ? 0 : inventoryItem.hashCode());
 		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + length;
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
@@ -193,12 +205,22 @@ public class Film {
 				return false;
 		} else if (!actors.equals(other.actors))
 			return false;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
 		if (id != other.id)
+			return false;
+		if (inventoryItem == null) {
+			if (other.inventoryItem != null)
+				return false;
+		} else if (!inventoryItem.equals(other.inventoryItem))
 			return false;
 		if (language == null) {
 			if (other.language != null)
@@ -264,11 +286,12 @@ public class Film {
 		s+=this.toString();
 		s+= "\nRental Duration: " + rentalDuration 
 			+ "\nRental Rate: " + ANSI_MAGENTA + rentalRate + ANSI_RESET 
-			+ "\nLength: " + ANSI_CYAN + length + ANSI_RESET 
+			+ "\nLength: " + ANSI_CYAN + length + " minutes" + ANSI_RESET 
 			+ "\nReplacement Cost: " + ANSI_RED + replacementCost + ANSI_RESET 
 			+ "\nSpecial Features: " + ANSI_BLUE + specialFeatures + ANSI_RESET
-			+ "\nCategory: " + showCategory();
-		 System.out.println(s);
+			+ "\nCategory: " + ANSI_YELLOW + showCategory() + ANSI_RESET
+			+ "\n" + showInventory();
+			System.out.println(s);
 	}
 	
 	public String showCategory() {
@@ -279,6 +302,49 @@ public class Film {
 				builder.append(", ");
 			} else if (i == category.size() - 1) {
 				builder.append(category.get(i).toString());
+			}
+		}
+		return builder.toString();
+	}
+	
+	public String showInventory() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(inventoryItem.size());
+		builder.append(" Copies in Inventory: ");
+		for (int i = 0; i < inventoryItem.size(); i++) {
+			if (i != inventoryItem.size() - 1) {
+				builder.append("Copy ");
+				builder.append(i + 1);
+				builder.append(" Condition: ");
+				 if(inventoryItem.get(i).getMediaCondition().equals("Used")) {
+					builder.append(ANSI_BLUE);
+				}
+				else if(inventoryItem.get(i).getMediaCondition().equals("New")) {
+					builder.append(ANSI_GREEN);
+				}
+				else if(inventoryItem.get(i).getMediaCondition().equals("Lost") || inventoryItem.get(i).getMediaCondition().equals("Damaged")) {
+					builder.append(ANSI_RED);
+				}
+				else {builder.append(ANSI_YELLOW);}
+				builder.append(inventoryItem.get(i).getMediaCondition());
+				builder.append(ANSI_RESET);
+				builder.append(", ");
+			} else if (i == inventoryItem.size() - 1) {
+				builder.append("Copy ");
+				builder.append(i + 1);
+				builder.append(" Condition: ");
+				if(inventoryItem.get(i).getMediaCondition().equals("Used")) {
+					builder.append(ANSI_BLUE);
+				}
+				else if(inventoryItem.get(i).getMediaCondition().equals("New")) {
+					builder.append(ANSI_GREEN);
+				}
+				else if(inventoryItem.get(i).getMediaCondition().equals("Lost") || inventoryItem.get(i).getMediaCondition().equals("Damaged")) {
+					builder.append(ANSI_RED);
+				}
+				else {builder.append(ANSI_YELLOW);}
+				builder.append(inventoryItem.get(i).getMediaCondition());
+				builder.append(ANSI_RESET);
 			}
 		}
 		return builder.toString();
