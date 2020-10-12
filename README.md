@@ -76,7 +76,6 @@ When viewing film details, the user will see a list of all copies of the film in
 * Packaging
 
 ### How to Run
-The Eclipse plugin - ANSI Escape in Console makes console output more interesting and fun!  http://mihai-nita.net/2013/06/03/eclipse-plugin-ansi-in-console/
 
 Upon running the program, the user is presented with a menu (main menu). The user will enter 1 to look up a film by its id, 2 to look up a film by keyword, or 3 to exit the application.
 
