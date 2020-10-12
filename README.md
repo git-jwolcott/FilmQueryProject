@@ -107,7 +107,7 @@ The user is then presented with a submenu. The user may enter 1 to return to the
 |                                |
 |  Enter a number from the list  |
 |                                |
-|  1. Return to main menu.       |
+|  1. Return to the main menu.   |
 |  2. View all film details.     |
 |                                |
 ==================================
