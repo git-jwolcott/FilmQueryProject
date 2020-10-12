@@ -103,9 +103,9 @@ The user is then presented with a submenu. The user may enter 1 to return to the
 
 | MENU  
 | :----:  
-Enter a number from the list  
-   1. Return to the main menu.  
-   2. View all film details.  
+|Enter a number from the list  
+|   1. Return to the main menu.  
+|   2. View all film details.  
 
 If 1 is entered in the submenu, the user is return to the main menu and may select to view a film by id, keyword, or exit the application.
 
